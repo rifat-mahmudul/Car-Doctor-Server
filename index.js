@@ -12,7 +12,7 @@ const user = process.env.DB_USER;
 const pass = process.env.DB_PASS;
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${user}:${pass}@cluster0.ybj57.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -39,6 +39,14 @@ async function run() {
         //get all service Data 
         app.get('/services', async(req, res) => {
             const result = await serviceCollection.find().toArray();
+            res.send(result);
+        })
+
+        //get single service Data
+        app.get('/services/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {_id : new ObjectId(id)};
+            const result = await serviceCollection.findOne(query);
             res.send(result);
         })
 
