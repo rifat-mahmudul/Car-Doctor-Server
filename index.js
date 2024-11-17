@@ -28,6 +28,7 @@ async function run() {
     try {
         
         const serviceCollection = client.db('ServiceDB').collection('services');
+        const ordersCollection = client.db('ServiceDB').collection('orders');
 
         //create a service Data
         app.post('/services', async(req, res) => {
@@ -47,6 +48,13 @@ async function run() {
             const id = req.params.id;
             const query = {_id : new ObjectId(id)};
             const result = await serviceCollection.findOne(query);
+            res.send(result);
+        })
+
+        //create orders Data
+        app.post('/orders', async(req, res) => {
+            const order = req.body;
+            const result = await ordersCollection.insertOne(order);
             res.send(result);
         })
 
