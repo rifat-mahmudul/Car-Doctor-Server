@@ -27,6 +27,14 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         
+        const serviceCollection = client.db('ServiceDB').collection('services');
+
+        //create a service Data
+        app.post('/services', async(req, res) => {
+            const service = req.body;
+            const result = await serviceCollection.insertOne(service);
+            res.send(result);
+        })
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
