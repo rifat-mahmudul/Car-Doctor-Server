@@ -48,6 +48,13 @@ async function run() {
             .send({success : true})
         })
 
+        app.post('/logout', async(req, res) => {
+            const user = req.body;
+            res
+            .clearCookie('token', {maxAge : 0})
+            .send({success : true})
+        })
+
 
         //create a service Data
         app.post('/services', async(req, res) => {
