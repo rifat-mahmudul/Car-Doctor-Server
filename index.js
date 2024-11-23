@@ -37,28 +37,12 @@ async function run() {
         //auth related api
         app.post('/jwt', async(req, res) => {
             const user = req.body;
-            console.log('user for token', user)
-            //create a token
-            const token = jwt.sign(user, process.env.ACCESS_TOKEN , {expiresIn : "1h"});
-
-            //set cookie
+            console.log(user)
+            const token = jwt.sign(user, process.env.ACCESS_TOKEN, {expiresIn : '1h'})
             res
-            .cookie('token', token, {
-                httpOnly : true,
-                secure : true,
-                sameSite : 'none'
-            })
-            .send({success : true})
+            .send({token})
         })
 
-        app.post('/logout', async(req, res) => {
-            const user = req.body;
-            console.log('log in out', user)
-            res
-            .clearCookie('token', 
-            {maxAge : 0})
-            .send({success: true})
-        })
 
         //create a service Data
         app.post('/services', async(req, res) => {
@@ -82,8 +66,9 @@ async function run() {
         })
 
         //create orders Data
-        app.post('/orders', async(req, res) => {
+        app.post('/orders' , async(req, res) => {
             const order = req.body;
+            console.log('cook cook', req.cookies);
             const result = await ordersCollection.insertOne(order);
             res.send(result);
         })
